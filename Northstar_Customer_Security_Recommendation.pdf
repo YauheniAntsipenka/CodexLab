@@ -1,0 +1,81 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+3 0 obj
+<< /Length 5697 >>
+stream
+1 1 1 rg 0 0 612 792 re f
+BT /FB 8.2 Tf 0.13 0.37 0.58 rg 42 751 Td (NORTHSTAR FINANCIAL) Tj ET
+BT /FB 20 Tf 0.09 0.17 0.26 rg 42 722 Td (Customer Security Recommendation) Tj ET
+BT /FB 7.4 Tf 0.44 0.49 0.54 rg 42 704 Td (ACCOUNT-UPDATE AUTHORIZATION  /  RELEASE DECISION BRIEF) Tj ET
+0.13 0.37 0.58 RG 1.5 w 42 690 m 570 690 l S
+0.94 0.965 0.985 rg 42 630 528 48 re f
+0.13 0.37 0.58 rg 42 630 3 48 re f
+BT /FB 7.2 Tf 0.13 0.37 0.58 rg 56 661 Td (RECOMMENDATION) Tj ET
+BT /FB 8.7 Tf 0.1 0.17 0.25 rg 56 647 Td (Pause the release decision until the ownership check is resolved and reviewed. The supplied evidence) Tj ET
+BT /FB 8.7 Tf 0.1 0.17 0.25 rg 56 636 Td (raises a focused authorization concern; it does not establish exploitability or prove the release unsafe.) Tj ET
+BT /FB 7.4 Tf 0.13 0.37 0.58 rg 42 610 Td (DECISION & FIRST STEP) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 595 Td (Within three days, Engineering must decide whether to release, delay, or require a targeted fix. The) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 584.6 Td (engineering director owns that decision, informed by the service owner and AppSec lead. The workflow is) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 574.2 Td (stuck at a concrete evidence gap: the changed path drops a role-check call, while supplied tests) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 563.8000000000001 Td (confirm authenticated updates but do not establish cross-customer ownership enforcement. With 62 open,) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 553.4000000000001 Td (often low-confidence findings and capacity for one focused review, examine this PR first. A) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 543.0000000000001 Td (repository-wide sweep would consume scarce review capacity without resolving this release-specific) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 532.6000000000001 Td (question.) Tj ET
+BT /FB 7.4 Tf 0.13 0.37 0.58 rg 42 514.2000000000002 Td (SCOPE & ACCOUNTABILITY) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 499.20000000000016 Td (Authorized scope is the account-update authorization PR in customer-owned customer-account-service, its) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 488.8000000000002 Td (directly related authorization files, and directly related tests. Excluded are other repositories,) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 478.4000000000002 Td (production testing, exploit reproduction, third-party systems, automatic remediation or merge, and) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 468.0000000000002 Td (automated release decisions. The service owner and engineering reviewer confirm code context and) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 457.60000000000025 Td (intended behavior; AppSec assesses the concern and evidence; the engineering director retains release) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 447.2000000000003 Td (accountability.) Tj ET
+BT /FB 7.4 Tf 0.13 0.37 0.58 rg 42 428.8000000000003 Td (EVIDENCE & CLASSIFICATION) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 413.8000000000003 Td (Directly supported: the changed path no longer calls the prior role-checking helper; supplied tests) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 403.4000000000003 Td (show an authenticated user can update an account; no supplied test demonstrates cross-customer denial.) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 393.00000000000034 Td (Reasonable inference: removal may weaken authorization and could create broken object-level) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 382.60000000000036 Td (authorization or tenant-isolation risk. Treat this as a credible, unconfirmed concern for focused) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 372.2000000000004 Td (validation, with potentially high impact if cross-customer updates are allowed; the note alone does not) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 361.8000000000004 Td (support a confirmed vulnerability or final severity. Unproven: whether another guard enforces) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 351.40000000000043 Td (ownership, whether cross-customer updates are possible, runtime behavior, exploitability, and actual) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 341.00000000000045 Td (impact.) Tj ET
+BT /FB 7.4 Tf 0.13 0.37 0.58 rg 42 322.6000000000005 Td (SUCCESS, GUARDRAILS & NEXT ACTION) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 307.6000000000005 Td (A useful review gives developers a concise evidence trail: affected path, missing check, relevant) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 297.2000000000005 Td (control flow, expected ownership rule, coverage gap, and a suggested negative test \(user A cannot) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 286.8000000000005 Td (update user B\'s account\) alongside a positive own-account case. Next, the service owner should add or) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 276.40000000000055 Td (identify that test and provide its result plus code context to AppSec for review within scope. The) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 266.00000000000057 Td (engineering director then decides release, delay, or fix using that evidence. Keep review read-only and) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 255.60000000000056 Td (limited to approved materials; any scope expansion needs Northstar authorization. No production probes,) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 245.20000000000056 Td (exploit attempts, edits, merges, or release automation. Review and test results inform judgment; they) Tj ET
+BT /F 8.25 Tf 0.16 0.2 0.25 rg 42 234.80000000000055 Td (do not guarantee discovery or a security outcome.) Tj ET
+0.83 0.87 0.91 RG 0.6 w 42 43 m 570 43 l S
+BT /FB 6.6 Tf 0.43 0.48 0.54 rg 42 29 Td (OWNER: CUSTOMER-ACCOUNT-SERVICE SERVICE OWNER   /   REVIEW: APPSEC   /   DECISION: ENGINEERING DIRECTOR) Tj ET
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 5 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F 1 0 R /FB 2 0 R >> >> /Contents 3 0 R >>
+endobj
+5 0 obj
+<< /Type /Pages /Kids [4 0 R] /Count 1 >>
+endobj
+6 0 obj
+<< /Type /Catalog /Pages 5 0 R >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000015 00000 n 
+0000000085 00000 n 
+0000000160 00000 n 
+0000005909 00000 n 
+0000006044 00000 n 
+0000006101 00000 n 
+trailer
+<< /Size 7 /Root 6 0 R >>
+startxref
+6150
+%%EOF

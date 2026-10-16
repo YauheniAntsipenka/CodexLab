@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Codex Enterprise Rollout Design — Linton Labs</title>
+<style>
+  @page { size: 11in 8.5in; margin: .25in; }
+  * { box-sizing: border-box; }
+  body { margin: 0; color: #172033; font-family: Arial, Helvetica, sans-serif; font-size: 7.45pt; line-height: 1.15; }
+  h1,h2,p { margin: 0; }
+  .kicker { color:#4467a9; font-weight:700; font-size:7pt; letter-spacing:.09em; text-transform:uppercase; }
+  h1 { margin-top: 1px; font-size: 19pt; letter-spacing: -.035em; color: #102044; }
+  .sub { margin-top: 2px; color:#53627c; font-size: 8pt; }
+  .band { display:flex; align-items:center; margin: 7px 0 6px; padding: 5px 8px; background:#edf3ff; border-left:3px solid #3565c5; }
+  .band b { color:#173b81; font-size:8.1pt; margin-right:5px; }
+  .grid { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .card { border:1px solid #d8e0ee; border-radius:4px; padding:5px 6px; break-inside:avoid; }
+  .card h2 { color:#224e95; font-size:8.2pt; letter-spacing:.01em; margin-bottom:3px; }
+  .card ul { padding-left: 13px; margin: 0; }
+  .card li { margin: 0 0 2px; }
+  .decision { color:#182d5d; font-weight:700; }
+  .tag { display:inline-block; padding:1px 3px; border-radius:3px; font-size:6.1pt; font-weight:700; letter-spacing:.04em; color:#fff; background:#3565c5; vertical-align:1px; }
+  .guard { color:#8a3d10; font-weight:700; }
+  .footer { display:flex; justify-content:space-between; gap:10px; margin-top:6px; padding-top:4px; border-top:1px solid #d8e0ee; font-size:5.95pt; color:#58657a; }
+  .sources { max-width:78%; }
+  a { color:#315ba7; text-decoration:none; }
+  code { font-family:"Courier New", monospace; font-size:6.8pt; color:#334b78; }
+</style>
+</head>
+<body>
+  <div class="kicker">Linton Labs · rollout review · billing platform first</div>
+  <h1>Codex Enterprise Rollout Design</h1>
+  <p class="sub">Recommendation: establish a controlled billing “golden path,” prove it for two delivery cycles, then replicate the controls—not the risk—across product teams.</p>
+
+  <div class="band"><b>Decision 1 — Start narrow, scale by evidence.</b> Billing is the reference environment: human-reviewed PRs only, protected branches, mandatory worktrees for concurrent agents, and release ownership remains with the service team.</div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>1 · Surfaces &amp; Windows posture</h2>
+      <ul>
+        <li><span class="decision">Default:</span> Codex app for parallel, repo-level tasks; it is the low-friction home for worktrees, review, and task handoff.</li>
+        <li><span class="decision">IDE extension:</span> default for small, developer-led edits and debugging; keep the engineer in the existing review loop.</li>
+        <li><span class="decision">CLI:</span> CI fixes, scripted/terminal-heavy work, and repeatable runbooks—not ad hoc production changes.</li>
+        <li><span class="decision">Cloud:</span> required for isolated long-running analysis, dependency upgrades, and GitHub review; forbidden for production access, customer data, or repos lacking a reviewed environment.</li>
+        <li><span class="decision">Worktrees:</span> mandatory for billing and any parallel change; optional for read-only triage or a single small edit.</li>
+        <li><span class="guard">Windows guardrail:</span> standardize Windows 11 + native <code>elevated</code> sandbox. Use <code>unelevated</code> only as a time-bounded fallback while IT fixes policy; use WSL2 semantics for Linux-native tooling or established WSL repos.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>2 · Model &amp; verification policy</h2>
+      <ul>
+        <li><span class="decision">Default:</span> Codex’s standard interactive model at medium effort for routine delivery; raise to high for cross-module changes, risky billing logic, unclear failures, or security review.</li>
+        <li><span class="decision">API-key workflows:</span> use current Codex-tuned <code>gpt-5.3-codex</code> in the Responses API; medium is the balanced baseline, high/xhigh are exception paths.</li>
+        <li><span class="decision">Spark:</span> allow <code>GPT-5.3-Codex-Spark</code> only for ultra-low-latency local iteration (narrow edits, rapid prototypes, feedback loops). Do not use it alone for billing design, migrations, security-sensitive work, or autonomous cloud tasks.</li>
+        <li><span class="guard">Spark guardrail:</span> every Spark change must name files in scope, run the repo’s targeted test/lint command, and receive a human diff review before commit.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>3 · Context continuity &amp; recovery</h2>
+      <ul>
+        <li><span class="decision">Checkpoint:</span> write a short decision log after each completed subtask, before destructive/risky operations, after 30–45 minutes, and before switching surface or owner.</li>
+        <li><span class="decision">Compaction:</span> compact only after recording objective, constraints, files changed, commands/results, open risks, and next command in the thread/PR.</li>
+        <li><span class="tag">RECOVER</span> Failed attempt: preserve the failed command/output, reset only the isolated worktree, state the hypothesis change, and retry once with a narrower scope.</li>
+        <li><span class="tag">RECOVER</span> Drift or lost context: stop edits; reopen from the checkpoint, compare diff to objective, discard the worktree if intent cannot be reconstructed, then restart a focused thread.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>4 · Governance bundle: repo as policy</h2>
+      <ul>
+        <li><span class="decision">Configuration:</span> managed baseline in user <code>~/.codex/config.toml</code>; checked-in repo overrides in <code>.codex/config.toml</code> only for trusted projects. Pin sandbox/approval posture centrally.</li>
+        <li><span class="decision">AGENTS.md:</span> root file names setup + verification commands, protected paths, PR size guidance, reviewers, and “done” = tests pass + diff reviewed + no fixture/secrets churn. Add billing-specific nested instructions.</li>
+        <li><span class="decision">.rules:</span> allow read/search/test/lint/git-status; require approval for network, package install, writes outside worktree, force-push, deploy, and destructive commands. Block secret discovery/exfiltration and direct production tooling.</li>
+        <li><span class="decision">Skills:</span> ship versioned <em>secure PR review</em>, <em>CI fix loop</em>, and <em>release notes</em> skills; owners maintain examples and verification criteria.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>5 · Cloud environment policy</h2>
+      <ul>
+        <li><span class="decision">Golden environment:</span> deterministic setup script installs pinned toolchains; optional maintenance script refreshes only lockfile-driven dependencies. Use shared cache deliberately; invalidate after setup, secret, or runtime changes.</li>
+        <li><span class="guard">Secrets guardrail:</span> secrets only in cloud secret storage and setup phase; never prompt, commit, echo, or pass secrets to agent runtime. Use ordinary environment variables only for non-sensitive configuration.</li>
+        <li><span class="guard">Internet guardrail:</span> agent internet off by default. Per-environment allowlist only the package registry, source host, and documented APIs required; review network-enabled task output.</li>
+        <li><span class="decision">Billing boundary:</span> synthetic fixtures only; no production credentials, customer exports, production database connectivity, or release execution in cloud.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>6 · Integrations, admin &amp; operations</h2>
+      <ul>
+        <li><span class="decision">GitHub:</span> begin with manual <code>@codex review</code> on billing PRs; enable automatic review only after 2 cycles of measured precision and an owner-approved ruleset. Codex advises; CODEOWNERS approve.</li>
+        <li><span class="decision">Slack / Linear:</span> delegate triage, summarization, issue-to-plan drafts, and read-only status. Do not delegate incident command, customer-data investigation, priority changes, approval, or release decisions. Slack task completion posts link-only by default.</li>
+        <li><span class="decision">RBAC:</span> separate Pilot Contributors, Billing Maintainers, Cloud Operators, Reviewers, and Workspace Admins. Cloud/environment edits and integration installation are admin-owned.</li>
+        <li><span class="decision">Signals:</span> adoption and cycle-time analytics; compliance logs for task, repo/environment, approvals, commands, sandbox/internet mode, diffs, and reviewer outcome. Review weekly in pilot, monthly after scale.</li>
+        <li><span class="decision">Support runbook:</span> check entitlement/sign-in → repo/environment selection → approval queue → sandbox mode/logs → network allowlist → missing GitHub/Slack access. Windows: verify Windows 11, admin prerequisites, active sandbox, then WSL2 choice; escalate blocked elevated setup to IT.</li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="footer">
+    <div class="sources"><b>Evidence base (official OpenAI documentation, accessed 18 Sep 2026):</b> <a href="https://developers.openai.com/api/docs/guides/latest-model">Model guidance</a> · <a href="https://developers.openai.com/docs/environments/cloud-environment">Cloud environments</a> · <a href="https://developers.openai.com/docs/windows/windows-sandbox">Windows sandbox</a> · <a href="https://developers.openai.com/docs/config-file/config-reference">Configuration reference</a> · <a href="https://developers.openai.com/docs/third-party/slack">Slack integration</a>.</div>
+    <div><b>Rollout gate:</b> 2 billing cycles · 0 uncontrolled production actions · measured review quality</div>
+  </div>
+</body>
+</html>
